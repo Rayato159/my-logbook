@@ -1,13 +1,26 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 // Components
 import { ResNavButton } from './ResNavButton'
 import { NavButton } from './NavButton'
 import { Logo } from './Logo'
 
-export const Navbar = ({ user }) => {
+export const Navbar = ({ user, isLogout }) => {
+
+    const navigate = useNavigate()
 
     const [isShowToggle, setIsShowToggle] = useState(false)
+
+    const onClickHandle = () => {
+        isLogout()
+    }
+
+    useEffect(() => {
+        if(!user) {
+            navigate('/login')
+        }
+    }, [isLogout])
 
     return (
         <nav className="bg-myrose-300 sticky top-0 w-full z-50">
@@ -41,7 +54,9 @@ export const Navbar = ({ user }) => {
                     </div>
                     <div className="hidden md:flex items-center space-x-6">
                         {user && <NavButton message={user.username}/>}
-                        {user && <NavButton message={"Logout"}/>}
+                        {user && <button onClick={onClickHandle} className="font-bold text-xl text-white hover:text-gray-300 items-center cursor-pointer">
+                                    Logout
+                                </button>}
                     </div>
                 </div>
                 {/* Mobile Toggle */}
@@ -50,7 +65,10 @@ export const Navbar = ({ user }) => {
                         {/* Username */}
                         {user && <ResNavButton message={user.username}/>}
                         {/* Logout */}
-                        {user &&  <ResNavButton message={"Logout"}/>}
+                        {user &&  <button onClick={onClickHandle} className="font-bold text-xl text-white hover:text-gray-300 items-center cursor-pointer">
+                                    Logout
+                                  </button>
+                        }
                     </div>:null
                 }
             </div>

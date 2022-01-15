@@ -12,13 +12,18 @@ import { Login } from './pages/Login'
 const App = () => {
 
   const [user, setUser] = useState(null)
+  const [token, setToken] = useState(null)
   const [error, setError] = useState(null)
+  const [isErrorArray, setIsErrorArray] = useState([])
 
   const isLogin = (username, password) => {
-    setUser({ username, password })
     fetchLogin(username, password)
   }
 
+  const isLogout = () => {
+    sessionStorage.removeItem("accessToken")
+    setToken(null)
+  }
   
   const fetchLogin = async (username, password) => {
     const res = await fetch('http://localhost:3000/api/auth/signin', {
@@ -32,20 +37,53 @@ const App = () => {
     const result = await res.json()
 
     if(!res.ok) {
-      setError(result)
-    }
+      //Check if error return in array
+      if(Array.isArray(result.message)){
 
-    setUser(result)
+        setIsErrorArray(result.message)
+      } else {
+
+        setError(result.message)
+      }
+    } else {
+      sessionStorage.setItem("accessToken", result.accessToken)
+      setToken(result.accessToken)
+    }
   }
+
+  const fetchUser = async () => {
+    const res = await fetch('http://localhost:3000/api/auth/profile', {
+      method: 'GET',
+      headers: {
+        "Authorization": `Bearer ${sessionStorage.getItem("accessToken")}`
+      }
+    })
+
+    const result = await res.json()
+
+    if(res.ok) {
+      setUser(result)
+    } else {
+      setUser(null)
+    }
+  }
+
+  useEffect(() => {
+    fetchUser()
+  }, [])
+
+  useEffect(() => {
+    fetchUser()
+  }, [token])
 
   return (
     <div className="App flex flex-col h-screen justify-between bg-myrose-100">
       <BrowserRouter>
-          <Navbar user={user}/>
+          <Navbar user={user} isLogout={isLogout}/>
               <Routes>
                   <Route>
                       <Route path="/" element={<Home />} />
-                      <Route path="login" element={<Login isLogin={isLogin} isError={error} />} />
+                      <Route path="login" element={<Login user={user} isLogin={isLogin} isError={error} isErrorArray={isErrorArray} />} />
                   </Route>
               </Routes>
           <Footer />
