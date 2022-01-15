@@ -54,7 +54,7 @@ export const Navbar = ({ user, isLogout }) => {
                     </div>
                     <div className="hidden md:flex items-center space-x-6">
                         {user && <NavButton message={user.username}/>}
-                        {user && <button onClick={onClickHandle} className="font-bold text-xl text-white hover:text-gray-300 items-center cursor-pointer">
+                        {user && <button onClick={onClickHandle} className="font-bold text-xl text-white hover:text-gray-300 items-center">
                                     Logout
                                 </button>}
                     </div>
@@ -65,9 +65,12 @@ export const Navbar = ({ user, isLogout }) => {
                         {/* Username */}
                         {user && <ResNavButton message={user.username}/>}
                         {/* Logout */}
-                        {user &&  <button onClick={onClickHandle} className="font-bold text-xl text-white hover:text-gray-300 items-center cursor-pointer">
+                        {user && 
+                            <div className="block hover:bg-myrose-400">
+                                <button onClick={onClickHandle} className="w-full text-left p-3 font-bold text-xl text-white">
                                     Logout
-                                  </button>
+                                </button>
+                            </div>
                         }
                     </div>:null
                 }
