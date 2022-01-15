@@ -3,8 +3,9 @@ import React, { useState } from 'react'
 // Components
 import { SubmitButton } from '../components/SubmitButton'
 import { Input } from '../components/Input'
+import { ErrorMessage } from '../components/ErrorMessage'
 
-export const Login = ({ isLogin }) => {
+export const Login = ({ isLogin, isError }) => {
 
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
@@ -19,7 +20,7 @@ export const Login = ({ isLogin }) => {
     return (
         <div>
             <div className="md:max-w-sm max-w-xs mx-auto my-4">
-                <div className="md:border-2 rounded md:border-myrose-500 p-6 md:bg-myrose-200">
+                <div className="md:border-4 rounded-xl md:border-myrose-500 p-6 md:bg-myrose-200">
                     <div className="flex flex-col justify-center space-y-6">
                         {/* Login Header */}
                         <div className="flex justify-center items-center space-x-1">
@@ -45,6 +46,7 @@ export const Login = ({ isLogin }) => {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                 </svg>
                             } onChangeHandle={(value) => setPassword(value)}/>
+                            {isError && <ErrorMessage message={isError.message}/>}
                             <div className="pt-8">
                                 <SubmitButton message={"Login"}/>
                             </div>

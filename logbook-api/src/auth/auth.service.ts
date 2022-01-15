@@ -65,14 +65,17 @@ export class AuthService {
         } = signInDto
 
         const user = await this.userRepository.findOne({ username })
-        const id = user.id
+
+        if(!user) {
+            throw new NotFoundException('Please check your username or password')
+        }
 
         if(user && await bcrypt.compare(password, user.password)) {
-            const payload: JwtPayload = { id }
+            const payload: JwtPayload = { username }
             const accessToken: string = this.jwtService.sign(payload)
             return { accessToken }
         } else {
-            throw new NotFoundException('Please check your username or password and try again.')
+            throw new NotFoundException('Something\'s wrong I can feel it.')
         }
     }
 

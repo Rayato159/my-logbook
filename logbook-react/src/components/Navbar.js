@@ -40,14 +40,15 @@ export const Navbar = ({ user }) => {
                         </div>
                     </div>
                     <div className="hidden md:flex items-center space-x-6">
-                        <NavButton message={user}/>
+                        {user && <NavButton message={user.username}/>}
                         {user && <NavButton message={"Logout"}/>}
                     </div>
                 </div>
+                {/* Mobile Toggle */}
                 {isShowToggle?
                     <div className="flex flex-col">
                         {/* Username */}
-                        <ResNavButton message={user}/>
+                        {user && <ResNavButton message={user.username}/>}
                         {/* Logout */}
                         {user &&  <ResNavButton message={"Logout"}/>}
                     </div>:null
