@@ -1,5 +1,7 @@
 import { Body, Controller, Get, Param, Post, Patch, Query, Delete, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
+import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from 'src/auth/jwt/get-user.decorator';
+import { User } from 'src/auth/user.entity';
 import { CreateTasksDto } from './dto/create-task.dto';
 import { GetTasksDto } from './dto/get-tasks.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
@@ -11,43 +13,48 @@ export class TasksController {
     constructor(private tasksService: TasksService) {}
 
     @Post()
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(AuthGuard())
     async createTask(
-        @Body() createTasksDto: CreateTasksDto
+        @Body() createTasksDto: CreateTasksDto,
+        @GetUser() user: User,
     ): Promise<Tasks> {
-        return this.tasksService.createTask(createTasksDto)
+        return this.tasksService.createTask(createTasksDto ,user)
     }
 
     @Get()
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(AuthGuard())
     async getTasks(
-        @Query() getTasksDto: GetTasksDto
+        @Query() getTasksDto: GetTasksDto,
+        @GetUser() user: User,
     ): Promise<Tasks[]> {
-        return this.tasksService.getTasks(getTasksDto)
+        return this.tasksService.getTasks(getTasksDto, user)
     }
 
     @Get('/:id')
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(AuthGuard())
     async getTaskByID(
         @Param('id') id: string,
+        @GetUser() user: User,
     ): Promise<Tasks> {
-        return this.tasksService.getTaskByID(id)
+        return this.tasksService.getTaskByID(id, user)
     }
 
     @Patch('/:id/update')
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(AuthGuard())
     async updateTask(
         @Param('id') id: string,
         @Body() updateTaskDto: UpdateTaskDto,
+        @GetUser() user: User,
     ): Promise<Tasks> {
-        return this.tasksService.updateTask(id, updateTaskDto)
+        return this.tasksService.updateTask(id, updateTaskDto, user)
     }
 
     @Delete('/:id')
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(AuthGuard())
     async deleteTask(
-        @Param('id') id: string
+        @Param('id') id: string,
+        @GetUser() user: User,
     ): Promise<Tasks> {
-        return this.tasksService.deleteTask(id)
+        return this.tasksService.deleteTask(id, user)
     }
 }

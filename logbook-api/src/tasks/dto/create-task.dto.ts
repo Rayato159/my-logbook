@@ -11,6 +11,5 @@ export class CreateTasksDto {
     description: string
 
     @IsOptional()
-    @IsString()
-    created?: string
+    created?: Date
 }

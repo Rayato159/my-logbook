@@ -1,3 +1,4 @@
+import { Exclude } from "class-transformer";
 import { User } from "src/auth/user.entity";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
@@ -13,9 +14,10 @@ export class Tasks {
     @Column()
     description: string
 
-    @Column()
-    created: string
+    @Column({ type: "date", default: () => "current_timestamp" })
+    created: Date
 
     @ManyToOne((_type) => User, (user) => user.tasks, { eager: false })
+    @Exclude({ toPlainOnly: true })
     user: User
 }
