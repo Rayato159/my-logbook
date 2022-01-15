@@ -5,8 +5,4 @@ export class GetTasksDto {
     @IsOptional()
     @IsString()
     search: string
-
-    @IsOptional()
-    @IsString()
-    date: string
 }

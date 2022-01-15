@@ -48,7 +48,6 @@ export class TasksService {
     async getTasks(getTasksDto: GetTasksDto): Promise<Tasks[]> {
         const {
             search,
-            date,
         } = getTasksDto
 
         const query = this.tasksRepository.createQueryBuilder('task')
@@ -58,10 +57,6 @@ export class TasksService {
                 '(LOWER(task.title) LIKE LOWER(:search) OR LOWER(task.description) LIKE LOWER(:search))',
                 { search: `%${search}%` }
             )
-        }
-
-        if(date) {
-            query.andWhere('task.created = :created', { date: `%${date}%` })
         }
 
         const tasks = await query.getMany()
