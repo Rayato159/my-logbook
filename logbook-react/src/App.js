@@ -13,14 +13,20 @@ const App = () => {
 
   const [user, setUser] = useState(null)
 
+  const isLogin = (username, password) => {
+    setUser({ username, password })
+  }
+
+  console.log(user)
+
   return (
-    <div className="App flex flex-col h-screen justify-between">
+    <div className="App flex flex-col h-screen justify-between bg-myrose-100">
       <BrowserRouter>
-          <Navbar user={user}/>
+          <Navbar user={null}/>
               <Routes>
                   <Route>
                       <Route path="/" element={<Home />} />
-                      <Route path="login" element={<Login />} />
+                      <Route path="login" element={<Login isLogin={isLogin} />} />
                   </Route>
               </Routes>
           <Footer />
