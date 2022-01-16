@@ -1,26 +1,13 @@
-import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from 'react'
 
 // Components
 import { ResNavButton } from './ResNavButton'
 import { NavButton } from './NavButton'
 import { Logo } from './Logo'
 
-export const Navbar = ({ user, isLogout }) => {
-
-    const navigate = useNavigate()
+export const Navbar = ({ user }) => {
 
     const [isShowToggle, setIsShowToggle] = useState(false)
-
-    const onClickHandle = () => {
-        isLogout()
-    }
-
-    useEffect(() => {
-        if(!user) {
-            navigate('/login')
-        }
-    }, [isLogout])
 
     return (
         <nav className="bg-myrose-300 sticky top-0 w-full z-50">
@@ -53,8 +40,8 @@ export const Navbar = ({ user, isLogout }) => {
                         </div>
                     </div>
                     <div className="hidden md:flex items-center space-x-6">
-                        {user && <NavButton message={user.username}/>}
-                        {user && <button onClick={onClickHandle} className="font-bold text-xl text-white hover:text-gray-300 items-center">
+                        {user && <NavButton message={user}/>}
+                        {user && <button className="font-bold text-xl text-white hover:text-gray-300 items-center">
                                     Logout
                                 </button>}
                     </div>
@@ -63,11 +50,11 @@ export const Navbar = ({ user, isLogout }) => {
                 {isShowToggle?
                     <div className="flex flex-col">
                         {/* Username */}
-                        {user && <ResNavButton message={user.username}/>}
+                        {user && <ResNavButton message={user}/>}
                         {/* Logout */}
                         {user && 
                             <div className="block hover:bg-myrose-400">
-                                <button onClick={onClickHandle} className="w-full text-left p-3 font-bold text-xl text-white">
+                                <button className="w-full text-left p-3 font-bold text-xl text-white">
                                     Logout
                                 </button>
                             </div>

@@ -21,6 +21,7 @@ export class AuthService {
         try {
             const users = await this.userRepository.find()
             return users
+            
         } catch(e) {
             throw new NotFoundException('Users are empty.')
         }
@@ -58,7 +59,7 @@ export class AuthService {
         return user
     }
 
-    async signIn(signInDto: SignInDto): Promise<{ accessToken }> {
+    async signIn(signInDto: SignInDto): Promise<{ accessToken: string }> {
         const {
             username,
             password,
@@ -74,6 +75,7 @@ export class AuthService {
             const payload: JwtPayload = { username }
             const accessToken: string = this.jwtService.sign(payload)
             return { accessToken }
+
         } else {
             throw new NotFoundException('Something\'s wrong I can feel it.')
         }
