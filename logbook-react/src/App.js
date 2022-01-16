@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import axios from 'axios'
 import jwt_decode from 'jwt-decode'
 
 // Components
@@ -11,11 +10,7 @@ import { Footer } from './components/Footer'
 import { Home } from './pages/Home'
 import { Login } from './pages/Login'
 
-// Base URL
-const client = axios.create({
-  baseURL: 'http://localhost:3000/api'
-})
-
+// Check Token
 const tokenDefault = localStorage.getItem("accessToken")
 
 if(tokenDefault) {
@@ -27,13 +22,6 @@ if(tokenDefault) {
 }
 
 const App = () => {
-
-  const [user, setUser] = useState(null)
-  const [token, setToken] = useState(tokenDefault)
-  const [error, setError] = useState(null)
-
-  
-
   return (
     <div className="App flex flex-col h-screen justify-between bg-myrose-100">
       <BrowserRouter>
