@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 
@@ -10,6 +9,9 @@ import { Footer } from './components/Footer'
 import { Home } from './pages/Home'
 import { Login } from './pages/Login'
 
+// Redux State
+import { useSelector } from 'react-redux'
+
 // Check Token
 const tokenDefault = localStorage.getItem("accessToken")
 
@@ -17,13 +19,16 @@ if(tokenDefault) {
   const decodeToken = jwt_decode(tokenDefault)
 
   if(decodeToken.exp*1000 < Date.now()) {
-    window.location.href = "/"
+    window.location.href = "http://localhost:3435/"
   }
 }
 
 const App = () => {
+
+  const user = useSelector(state => state.user.value)
+
   return (
-    <div className="App flex flex-col h-screen justify-between bg-myrose-100">
+    <div className="App flex flex-col h-screen justify-between">
       <BrowserRouter>
           <Navbar user={"Ruangyot"}/>
               <Routes>

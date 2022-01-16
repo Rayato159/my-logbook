@@ -5,9 +5,15 @@ import { ResNavButton } from './ResNavButton'
 import { NavButton } from './NavButton'
 import { Logo } from './Logo'
 
+// Redux
+import { useDispatch } from 'react-redux'
+import { logout } from '../features/loginSlice'
+
 export const Navbar = ({ user }) => {
 
     const [isShowToggle, setIsShowToggle] = useState(false)
+
+    const dispatch = useDispatch()
 
     return (
         <nav className="bg-myrose-300 sticky top-0 w-full z-50">
@@ -40,8 +46,8 @@ export const Navbar = ({ user }) => {
                         </div>
                     </div>
                     <div className="hidden md:flex items-center space-x-6">
-                        {user && <NavButton message={user}/>}
-                        {user && <button className="font-bold text-xl text-white hover:text-gray-300 items-center">
+                        {user && <NavButton message={user.username}/>}
+                        {user.username && <button onClick={() => dispatch(logout())} className="font-bold text-xl text-white hover:text-gray-300 items-center">
                                     Logout
                                 </button>}
                     </div>
@@ -50,11 +56,11 @@ export const Navbar = ({ user }) => {
                 {isShowToggle?
                     <div className="flex flex-col">
                         {/* Username */}
-                        {user && <ResNavButton message={user}/>}
+                        {user && <ResNavButton message={user.username}/>}
                         {/* Logout */}
-                        {user && 
+                        {user.username && 
                             <div className="block hover:bg-myrose-400">
-                                <button className="w-full text-left p-3 font-bold text-xl text-white">
+                                <button onClick={() => dispatch(logout())} className="w-full text-left p-3 font-bold text-xl text-white">
                                     Logout
                                 </button>
                             </div>

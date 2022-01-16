@@ -1,32 +1,42 @@
 import React, { useState } from 'react'
 
-// Services
-import { fetchLogin } from '../services/AuthService'
-
 // Redux
-import { useSelector, useDispatch } from 'react-redux'
-import { setUsername, setPassword } from '../features/loginSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { loginPending, loginSuccess, loginFail } from '../features/loginSlice'
 
 // Components
 import { SubmitButton } from '../components/SubmitButton'
 import { Input } from '../components/Input'
 import { ErrorMessage } from '../components/ErrorMessage'
 
-export const Login = () => {
+// API
+import { userLogin } from '../api/UserAPI'
 
-    const details = useSelector(state => state.details)
+export const Login = () => {
+    
     const dispatch = useDispatch()
 
     const [isHidePassword, setIsHidePassword] = useState(true)
+    const [username, setUsername] = useState("")
+    const [password, setPassword] = useState("")
 
-    const onSubmitHandle = (e) => {
+    const { isLoading, isAuth, error } = useSelector((state) => state.user)
+
+    const onSubmitHandle = async (e) => {
         e.preventDefault()
 
-        fetchLogin(details)
+        console.log({ username, password })
+
+        dispatch(loginPending())
+
+        try {
+            const isAuth = await userLogin({ username, password })
+            console.log(isAuth)
+        } catch(e) {
+            dispatch(loginFail(e.message))
+        }
     }
-
-    console.log(details)
-
+    
     return (
         <div>
             <div className="md:max-w-sm max-w-xs mx-auto my-4">
@@ -44,7 +54,7 @@ export const Login = () => {
 
                         {/* Login Form */}
                         <form onSubmit={onSubmitHandle} className="flex flex-col space-y-3">
-                            <Input message={"Username"} type={"text"} onChangeHandle={(value) => dispatch(setUsername(value))}/>
+                            <Input message={"Username"} type={"text"} onChangeHandle={(value) => setUsername(value)}/>
                             <Input message={"Password"} type={isHidePassword? "password":"text"} 
                             options={
                                 isHidePassword?
@@ -55,12 +65,16 @@ export const Login = () => {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                 </svg>
-                            } onChangeHandle={(value) => dispatch(setPassword(value))}/>
-                            {/* {isError &&
+                            } onChangeHandle={(value) => setPassword(value)}/>
+                            {error &&
                                 <ErrorMessage message={"Please check your username or password."}/>
-                            } */}
+                            }
                             <div className="pt-6">
-                                <SubmitButton message={"Login"}/>
+                                {isLoading?
+                                    <SubmitButton message={"Pending..."} beauty={"w-full bg-myrose-400  rounded font-bold text-xl text-myrose-500 p-1"} />
+                                    :
+                                    <SubmitButton message={"Login"} beauty={"w-full bg-myrose-300 hover:bg-myrose-400  rounded font-bold text-xl text-myrose-500 p-1"} />
+                                }
                             </div>
                         </form>
                     </div>
