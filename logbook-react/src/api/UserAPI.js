@@ -9,8 +9,8 @@ export const userLogin = (formData) => {
         console.log(res)
         resolve(res.data)
     } catch (e) {
-        console.log(e.message)
-        reject(e)
+        console.log(e.response.data)
+        reject(e.response.data)
     }
   });
 };

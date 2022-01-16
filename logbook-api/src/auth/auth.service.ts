@@ -68,7 +68,9 @@ export class AuthService {
         const user = await this.userRepository.findOne({ username })
 
         if(!user) {
-            throw new NotFoundException('Please check your username or password')
+            throw new NotFoundException({
+                message: ['Something\'s wrong I can feel it.']
+            })
         }
 
         if(user && await bcrypt.compare(password, user.password)) {
@@ -77,7 +79,9 @@ export class AuthService {
             return { accessToken }
 
         } else {
-            throw new NotFoundException('Something\'s wrong I can feel it.')
+            throw new NotFoundException({
+                message: ['Something\'s wrong I can feel it.']
+            })
         }
     }
 

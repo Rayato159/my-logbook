@@ -31,7 +31,9 @@ export const Login = () => {
 
         try {
             const isAuth = await userLogin({ username, password })
-            console.log(isAuth)
+            if(isAuth.message) {
+                dispatch(loginFail(e.message))
+            }
         } catch(e) {
             dispatch(loginFail(e.message))
         }
@@ -39,7 +41,7 @@ export const Login = () => {
     
     return (
         <div>
-            <div className="md:max-w-sm max-w-xs mx-auto my-4">
+            <div className="md:max-w-sm max-w-xs mx-auto my-10">
                 <div className="md:border-4 rounded-xl md:border-myrose-500 p-6 md:bg-myrose-200">
                     <div className="flex flex-col justify-center space-y-6">
                         {/* Login Header */}
@@ -67,9 +69,15 @@ export const Login = () => {
                                 </svg>
                             } onChangeHandle={(value) => setPassword(value)}/>
                             {error &&
-                                <ErrorMessage message={"Please check your username or password."}/>
+                                <div className="pt-3">
+                                    {error.map((e, i) => {
+                                        return (
+                                            <ErrorMessage key={i} message={e}/>
+                                        )
+                                    })}
+                                </div>
                             }
-                            <div className="pt-6">
+                            <div className="pt-3">
                                 {isLoading?
                                     <SubmitButton message={"Pending..."} beauty={"w-full bg-myrose-400  rounded font-bold text-xl text-myrose-500 p-1"} />
                                     :

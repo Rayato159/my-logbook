@@ -8,7 +8,7 @@ export const userSlice = createSlice({
     initialState: {
         isLoading: false,
         isAuth: false,
-        error: '',
+        error: [],
     },
 
     reducers: {
@@ -19,7 +19,7 @@ export const userSlice = createSlice({
         loginSuccess: (state) => {
             state.isLoading = false
             state.isAuth = true
-            state.error = ''
+            state.error = []
         },
 
         loginFail: (state, { payload }) => {
