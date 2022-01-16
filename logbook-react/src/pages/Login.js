@@ -32,8 +32,11 @@ export const Login = () => {
         try {
             const isAuth = await userLogin({ username, password })
             if(isAuth.message) {
-                dispatch(loginFail(e.message))
+                return dispatch(loginFail(e.message))
             }
+
+            dispatch(loginSuccess())
+
         } catch(e) {
             dispatch(loginFail(e.message))
         }
