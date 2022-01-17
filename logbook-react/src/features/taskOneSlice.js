@@ -5,7 +5,12 @@ export const taskOneSlice = createSlice({
     name: 'taskOne',
     initialState: {
         isLoading: false,
-        taskOneInfo: null,
+        taskOneInfo: {
+            id: "",
+            title: "",
+            description: "",
+            created: ""
+        },
         errors: [],
     },
 

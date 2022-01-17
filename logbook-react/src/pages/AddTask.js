@@ -38,7 +38,7 @@ export const AddTask = () => {
     }
 
     if(!userInfo) {
-        navigate('/')
+        navigate('/home')
     }
     
     return (

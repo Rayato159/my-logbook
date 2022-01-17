@@ -7,7 +7,6 @@ import { taskOneLoading, taskOneSuccess, taskOneFail } from '../features/taskOne
 
 // Components
 import { SubmitButton } from '../components/SubmitButton'
-import { Input } from '../components/Input'
 import { ErrorMessage } from '../components/ErrorMessage'
 
 // API
@@ -18,31 +17,33 @@ export const EditTask = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    const taskOneInfo = useSelector((state) => state.taskOne.taskOneInfo)
+    const [taskOneInfo , { userInfo }] = useSelector((state) => [
+        state.taskOne.taskOneInfo,
+        state.user,
+    ])
 
-    const [title, setTitle] = useState("")
-    const [description, setDescription] = useState("")
+    if(!userInfo) {
+        navigate('/home')
+    }
+
+    const [title, setTitle] = useState(taskOneInfo.title)
+    const [description, setDescription] = useState(taskOneInfo.description)
 
     const { isLoading, errors } = useSelector((state) => state.taskOne)
-    const { userInfo } = useSelector((state) => state.user)
 
     const onSubmitHandle = async (e) => {
         e.preventDefault()
 
         dispatch(taskOneLoading())
-        // try {
-        //     const res = await createTask(title, description)
-        //     dispatch(taskOneSuccess(res))
-        //     navigate('/home')
-        // } catch(e) {
-        //     dispatch(taskOneFail(e.message))
-        // }
+        try {
+            const res = await updateTask(taskOneInfo.id, title, description)
+            dispatch(taskOneSuccess(res))
+            navigate('/home')
+        } catch(e) {
+            dispatch(taskOneFail(e.message))
+        }
     }
 
-    if(!taskOneInfo) {
-        navigate('/home')
-    }
-    
     return (
         <div>
             <div className="md:max-w-sm max-w-xs mx-auto my-10">
@@ -65,14 +66,14 @@ export const EditTask = () => {
                                     <label className="font-bold text-md">Title</label>
                                     <label className="font-bold text-red-500">*</label>
                                 </div>
-                                <input value={taskOneInfo.title} onChange={(e) => setTitle(e.target.value)} type="text" className="w-full p-2 rounded focus:outline-none" />
+                                <input value={title} onChange={(e) => setTitle(e.target.value)} type="text" className="w-full p-2 rounded focus:outline-none" />
                             </div>
                             <div>
                                 <div className="flex space-x-1 items-center mb-1">
                                     <label className="font-bold text-md">Description</label>
                                     <label className="font-bold text-red-500">*</label>
                                 </div>
-                                <textarea value={taskOneInfo.description} onChange={(e) => setDescription(e.target.value)} className="p-2 w-full rounded focus:outline-none" rows="6" cols="50"></textarea>
+                                <textarea value={description} onChange={(e) => setDescription(e.target.value)} className="p-2 w-full rounded focus:outline-none" rows="6" cols="50"></textarea>
                             </div>
                             {errors.length > 0 &&
                                 <div className="p-2 bg-red-300 border border-red-500">

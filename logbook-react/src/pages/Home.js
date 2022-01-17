@@ -22,7 +22,7 @@ export const Home = () => {
 
     // Store
     const dispatch = useDispatch()
-    const [user, { taskInfo }, { isLoading, taskOneInfo, errors }] = useSelector((state) => [
+    const [user, { taskInfo }, { isLoading, taskOneInfo }] = useSelector((state) => [
         state.user,
         state.task,
         state.taskOne,
