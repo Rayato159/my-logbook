@@ -12,6 +12,8 @@ import { Footer } from './components/Footer'
 // Pages
 import { Home } from './pages/Home'
 import { Login } from './pages/Login'
+import { AddTask } from './pages/AddTask'
+import { NotFound } from './pages/NotFound'
 
 // Redux State
 import { useSelector, useDispatch } from 'react-redux'
@@ -44,6 +46,8 @@ const App = () => {
                   <Route>
                       <Route path="/" element={<Login />} />
                       <Route path="/home" element={<Home />} />
+                      <Route path="/home/add_task" element={<AddTask />} />
+                      <Route path="*" element={<NotFound />} />
                   </Route>
               </Routes>
           <Footer />

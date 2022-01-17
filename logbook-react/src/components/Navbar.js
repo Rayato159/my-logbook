@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 // Components
 import { ResNavButton } from './ResNavButton'
@@ -17,8 +18,10 @@ export const Navbar = ({ user }) => {
     const dispatch = useDispatch()
 
     const onClickHandle = () => {
-        dispatch(logout())
-        dispatch(userSuccess(null))
+        if(window.confirm("Are you sure?")) {
+            dispatch(logout())
+            dispatch(userSuccess(null))
+        }
     }
 
     return (
@@ -27,7 +30,7 @@ export const Navbar = ({ user }) => {
                 <div className="flex py-3 justify-between">
                     <div className="flex space-x-4">
                         {/* Logo */}
-                        <div className="flex space-x-1 cursor-pointer text-white">
+                        <Link to="/home" className="flex space-x-1 cursor-pointer text-white">
                             {/* Mobile Toggle */}
                             {user &&
                                 <button onClick={() => setIsShowToggle(!isShowToggle)} className="md:hidden flex items-center hover:text-gray-300 mx-2">
@@ -37,7 +40,7 @@ export const Navbar = ({ user }) => {
                                 </button>
                             }
                             <Logo />
-                        </div>
+                        </Link>
 
                         {/* Searchbox */}
                         <div className="hidden md:flex relative items-center justify-end">
@@ -55,7 +58,12 @@ export const Navbar = ({ user }) => {
                         {user && <NavButton message={user.username}/>}
                         {user && <button onClick={onClickHandle} className="font-bold text-xl text-white hover:text-gray-300 items-center">
                                     Logout
-                                </button>}
+                                </button>
+                        }
+                        {user && <Link to="/home/add_task" className="font-bold text-xl text-white items-center bg-sky-500 px-2 rounded hover:scale-110 transition-transform duration-300">
+                                    +Task 📝
+                                </Link>
+                        }
                     </div>
                 </div>
                 {/* Mobile Toggle */}
@@ -68,6 +76,10 @@ export const Navbar = ({ user }) => {
                             <button onClick={onClickHandle} className="block hover:bg-myrose-400 w-full text-left p-3 font-bold text-xl text-white">
                                 Logout
                             </button>
+                        }
+                        {user && <Link to="/home/add_task" className="block hover:bg-myrose-400 w-full text-left p-3 font-bold text-xl text-white">
+                                    Add Post
+                                </Link>
                         }
                     </div>:null
                 }

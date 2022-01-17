@@ -6,7 +6,7 @@ export const userSlice = createSlice({
     initialState: {
         isLoading: false,
         userInfo: null,
-        error: [],
+        errors: [],
     },
 
     reducers: {
@@ -17,12 +17,12 @@ export const userSlice = createSlice({
         userSuccess: (state, { payload }) => {
             state.isLoading = false
             state.userInfo = payload
-            state.error = []
+            state.errors = []
         },
 
         userFail: (state, { payload }) => {
             state.isLoading = false
-            state.error = payload
+            state.errors = payload
         },
     }
 })

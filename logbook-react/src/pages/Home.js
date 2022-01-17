@@ -1,20 +1,31 @@
-import React,{ useEffect } from 'react'
+import React,{ useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import ReactPaginate from 'react-paginate'
 
 // API
-import { getTasks } from '../api/TaskAPI'
+import { getTasks, deleteTask } from '../api/TaskAPI'
 
 // Redux
 import { useSelector, useDispatch } from 'react-redux'
 import { taskLoading, taskSuccess, taskFail } from '../features/taskSlice'
+import { taskOneLoading, taskOneSuccess, taskOneFail } from '../features/taskOneSlice'
 
 export const Home = () => {
 
+    // Pagination
+    const [pageNumber, setPageNumber] = useState(0)
+    const tasksPerPage = 5
+    const pagesVisited = pageNumber * tasksPerPage
+    
+    // Navigate
     const navigate = useNavigate()
+
+    // Store
     const dispatch = useDispatch()
-    const [user, { taskInfo }] = useSelector((state) => [
+    const [user, { taskInfo }, { isLoading, taskOneInfo, errors }] = useSelector((state) => [
         state.user,
         state.task,
+        state.taskOne,
     ])
 
     if(!user.userInfo) {
@@ -33,37 +44,77 @@ export const Home = () => {
 
         dispatch(taskLoading())
         fetchTasks()
-    }, [])
+    }, [taskOneInfo])
+
+    const deleteTaskHandle = async (id) => {
+
+        if(window.confirm(`Delete task: ${id}?`)) {
+            dispatch(taskOneLoading())
+            deleteTaskByID(id)
+        }
+    }
+    
+    async function deleteTaskByID(id) {
+        try {
+            const res = await deleteTask(id)
+            dispatch(taskOneSuccess(res))
+        } catch(e) {
+            dispatch(taskOneFail(e.message))
+        }
+    }
+
+    // Page Count
+    const pageCount = Math.ceil(taskInfo.length / tasksPerPage)
+
+    const displayTasks = taskInfo.slice(pagesVisited, pagesVisited + tasksPerPage)
+        .map((task) => {
+            return (
+                <div key={task.id} className="flex flex-col border-2 rounded-md border-myrose-500 bg-myrose-200 p-4 mx-4">
+                    <div className="font-bold">
+                        📝 {task.title}
+                    </div>
+                    <div className="text-sm">
+                        📅 Date: {task.created}
+                    </div>
+                    <div className="ml-6 py-2">
+                        {task.description}
+                    </div>
+                    <div className="flex space-x-3 justify-end">
+                        <button className="font-bold text-md rounded bg-sky-500 px-2 hover:scale-125 transition-transform duration-300">
+                            ✏️
+                        </button>
+                        {isLoading?
+                            <button disabled className="font-bold text-md rounded bg-red-300 px-2">
+                                ❌
+                            </button>:
+                            <button onClick={() => deleteTaskHandle(task.id)} className="font-bold text-md rounded bg-red-500 px-2 hover:scale-125 transition-transform duration-300">
+                                ❌
+                            </button>
+                        }
+                    </div>
+                </div>
+            )
+        })
+
+    const changePage = ({ selected }) => {
+        setPageNumber(selected)
+    }
 
     return (
         <div className="my-10">
             <div className="max-w-6xl mx-auto">
                 <div className="flex flex-col space-y-6">
-                    {
-                        taskInfo.map((task) => {
-                            return (
-                                <div className="flex flex-col border-2 rounded-md border-myrose-500 bg-myrose-200 p-4 mx-4">
-                                    <div className="font-bold">
-                                        📝 {task.title}
-                                    </div>
-                                    <div className="text-sm">
-                                        📅 Date: {task.created}
-                                    </div>
-                                    <div className="ml-6">
-                                        {task.description}
-                                    </div>
-                                    <div className="flex space-x-3 justify-end">
-                                        <button className="font-bold text-md rounded bg-sky-500 px-2 hover:scale-125 transition-transform duration-300">
-                                            ✏️
-                                        </button>
-                                        <button className="font-bold text-md rounded bg-red-500 px-2 hover:scale-125 transition-transform duration-300">
-                                            ❌
-                                        </button>
-                                    </div>
-                                </div>
-                            )
-                        })
-                    }
+                    {displayTasks}
+                    <ReactPaginate
+                        previousLabel={"<"}
+                        nextLabel={">"}
+                        pageCount={pageCount}
+                        onPageChange={changePage}
+                        containerClassName={"flex space-x-4 justify-center"}
+                        previousLinkClassName={"bg-myrose-300 p-1 hover:bg-myrose-200"}
+                        nextLinkClassName={"bg-myrose-300 p-1 hover:scale-110 transition-transform duration-300 hover:bg-myrose-200"}
+                        activeClassName={"bg-myrose-200 px-1 hover:scale-110 transition-transform duration-300"}
+                    />
                 </div>
             </div>
         </div>

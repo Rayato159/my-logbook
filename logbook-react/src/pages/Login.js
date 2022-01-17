@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 // Redux
@@ -19,6 +19,8 @@ export const Login = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
+    const [countFail, setCountFail] = useState(2)
+
     const [isHidePassword, setIsHidePassword] = useState(true)
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
@@ -38,6 +40,12 @@ export const Login = () => {
             localStorage.setItem("accessToken", res.accessToken)
         } catch(e) {
             dispatch(loginFail(e.message))
+            setCountFail(countFail - 1)
+
+            if(countFail === 0) {
+                setCountFail(2)
+                window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
+            }
         }
 
         dispatch(userLoading())
