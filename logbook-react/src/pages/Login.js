@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 // Redux
 import { useDispatch, useSelector } from 'react-redux'
 import { loginPending, loginSuccess, loginFail } from '../features/loginSlice'
+import { userLoading, userSuccess, userFail } from '../features/userSlice'
 
 // Components
 import { SubmitButton } from '../components/SubmitButton'
@@ -10,36 +12,46 @@ import { Input } from '../components/Input'
 import { ErrorMessage } from '../components/ErrorMessage'
 
 // API
-import { userLogin } from '../api/UserAPI'
+import { getUserInfo, userLogin } from '../api/UserAPI'
 
 export const Login = () => {
     
+    const navigate = useNavigate()
     const dispatch = useDispatch()
 
     const [isHidePassword, setIsHidePassword] = useState(true)
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
 
-    const { isLoading, isAuth, error } = useSelector((state) => state.user)
+    const { isLoading, errors } = useSelector((state) => state.login)
+    const { userInfo } = useSelector((state) => state.user)
 
     const onSubmitHandle = async (e) => {
         e.preventDefault()
 
-        console.log({ username, password })
-
         dispatch(loginPending())
 
         try {
-            const isAuth = await userLogin({ username, password })
-            if(isAuth.message) {
-                return dispatch(loginFail(e.message))
-            }
-
+            const res = await userLogin({ username, password })
+            console.log(res)
             dispatch(loginSuccess())
-
+            localStorage.setItem("accessToken", res.accessToken)
         } catch(e) {
             dispatch(loginFail(e.message))
         }
+
+        dispatch(userLoading())
+
+        try {
+            const res = await getUserInfo()
+            dispatch(userSuccess(res))
+        } catch(e) {
+            dispatch(userFail(e.message))
+        }
+    }
+
+    if(userInfo) {
+        navigate('/home')
     }
     
     return (
@@ -71,9 +83,9 @@ export const Login = () => {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                 </svg>
                             } onChangeHandle={(value) => setPassword(value)}/>
-                            {error &&
-                                <div className="pt-3">
-                                    {error.map((e, i) => {
+                            {errors.length > 0 &&
+                                <div className="p-2 bg-red-300 border border-red-500">
+                                    {errors.map((e, i) => {
                                         return (
                                             <ErrorMessage key={i} message={e}/>
                                         )

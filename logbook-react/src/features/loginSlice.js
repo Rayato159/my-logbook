@@ -1,14 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialStateValue = { username: "", password: "" }
-
-export const userSlice = createSlice({
+export const loginSlice = createSlice({
     
-    name: 'user',
+    name: 'login',
     initialState: {
         isLoading: false,
         isAuth: false,
-        error: [],
+        errors: [],
     },
 
     reducers: {
@@ -19,21 +17,22 @@ export const userSlice = createSlice({
         loginSuccess: (state) => {
             state.isLoading = false
             state.isAuth = true
-            state.error = []
+            state.errors = []
         },
 
         loginFail: (state, { payload }) => {
             state.isLoading = false
-            state.error = payload
+            state.errors = payload
         },
 
         logout: (state) => {
-            state.value = initialStateValue
             localStorage.removeItem("accessToken")
+            state.isAuth = false
+            state.errors = []
         }
     }
 })
 
-export const { loginPending, loginSuccess, loginFail, logout } = userSlice.actions
+export const { loginPending, loginSuccess, loginFail, logout } = loginSlice.actions
 
-export default userSlice.reducer
+export default loginSlice.reducer

@@ -7,13 +7,19 @@ import { Logo } from './Logo'
 
 // Redux
 import { useDispatch } from 'react-redux'
+import { userSuccess } from '../features/userSlice'
 import { logout } from '../features/loginSlice'
 
 export const Navbar = ({ user }) => {
-
+    
     const [isShowToggle, setIsShowToggle] = useState(false)
 
     const dispatch = useDispatch()
+
+    const onClickHandle = () => {
+        dispatch(logout())
+        dispatch(userSuccess(null))
+    }
 
     return (
         <nav className="bg-myrose-300 sticky top-0 w-full z-50">
@@ -45,25 +51,23 @@ export const Navbar = ({ user }) => {
                             </button>
                         </div>
                     </div>
-                    <div className="hidden md:flex items-center space-x-6">
+                    <div className="hidden md:flex space-x-6">
                         {user && <NavButton message={user.username}/>}
-                        {user.username && <button onClick={() => dispatch(logout())} className="font-bold text-xl text-white hover:text-gray-300 items-center">
+                        {user && <button onClick={onClickHandle} className="font-bold text-xl text-white hover:text-gray-300 items-center">
                                     Logout
                                 </button>}
                     </div>
                 </div>
                 {/* Mobile Toggle */}
                 {isShowToggle?
-                    <div className="flex flex-col">
+                    <div className="md:hidden flex flex-col">
                         {/* Username */}
                         {user && <ResNavButton message={user.username}/>}
                         {/* Logout */}
-                        {user.username && 
-                            <div className="block hover:bg-myrose-400">
-                                <button onClick={() => dispatch(logout())} className="w-full text-left p-3 font-bold text-xl text-white">
-                                    Logout
-                                </button>
-                            </div>
+                        {user && 
+                            <button onClick={onClickHandle} className="block hover:bg-myrose-400 w-full text-left p-3 font-bold text-xl text-white">
+                                Logout
+                            </button>
                         }
                     </div>:null
                 }

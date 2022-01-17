@@ -1,5 +1,9 @@
+import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import jwt_decode from 'jwt-decode'
+// import jwt_decode from 'jwt-decode'
+
+// API
+import { getUserInfo } from './api/UserAPI'
 
 // Components
 import { Navbar } from './components/Navbar'
@@ -10,31 +14,36 @@ import { Home } from './pages/Home'
 import { Login } from './pages/Login'
 
 // Redux State
-import { useSelector } from 'react-redux'
-
-// Check Token
-const tokenDefault = localStorage.getItem("accessToken")
-
-if(tokenDefault) {
-  const decodeToken = jwt_decode(tokenDefault)
-
-  if(decodeToken.exp*1000 < Date.now()) {
-    window.location.href = "http://localhost:3435/"
-  }
-}
+import { useSelector, useDispatch } from 'react-redux'
+import { userSuccess, userFail, userLoading } from './features/userSlice'
 
 const App = () => {
 
-  const user = useSelector(state => state.user.value)
+  const dispatch = useDispatch()
+  const { userInfo } = useSelector((state) => state.user)
+
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const res = await getUserInfo()
+        dispatch(userSuccess(res))
+      } catch(e) {
+        dispatch(userFail(e.message))
+      }
+    }
+
+    dispatch(userLoading())
+    fetchUser()
+  }, [])
 
   return (
     <div className="App flex flex-col h-screen justify-between">
       <BrowserRouter>
-          <Navbar user={"Ruangyot"}/>
+          <Navbar user={userInfo}/>
               <Routes>
                   <Route>
                       <Route path="/" element={<Login />} />
-                      <Route path="/logbook" element={<Home />} />
+                      <Route path="/home" element={<Home />} />
                   </Route>
               </Routes>
           <Footer />
