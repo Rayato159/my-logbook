@@ -13,6 +13,7 @@ import { Footer } from './components/Footer'
 import { Home } from './pages/Home'
 import { Login } from './pages/Login'
 import { AddTask } from './pages/AddTask'
+import { EditTask } from './pages/EditTask'
 import { NotFound } from './pages/NotFound'
 
 // Redux State
@@ -47,6 +48,7 @@ const App = () => {
                       <Route path="/" element={<Login />} />
                       <Route path="/home" element={<Home />} />
                       <Route path="/home/add_task" element={<AddTask />} />
+                      <Route path="/home/edit_task" element={<EditTask />} />
                       <Route path="*" element={<NotFound />} />
                   </Route>
               </Routes>

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import ReactPaginate from 'react-paginate'
 
 // API
-import { getTasks, deleteTask } from '../api/TaskAPI'
+import { getTasks, getTaskByID, deleteTask } from '../api/TaskAPI'
 
 // Redux
 import { useSelector, useDispatch } from 'react-redux'
@@ -63,6 +63,22 @@ export const Home = () => {
         }
     }
 
+    const editTaskHandle = (id) => {
+        
+        dispatch(taskOneLoading())
+        fetchTaskByID(id)
+    }
+
+    async function fetchTaskByID(id) {
+        try {
+            const res = await getTaskByID(id)
+            dispatch(taskOneSuccess(res))
+            navigate('/home/edit_task')
+        } catch(e) {
+            dispatch(taskOneFail(e.message))
+        }
+    }
+
     // Page Count
     const pageCount = Math.ceil(taskInfo.length / tasksPerPage)
 
@@ -80,7 +96,7 @@ export const Home = () => {
                         {task.description}
                     </div>
                     <div className="flex space-x-3 justify-end">
-                        <button className="font-bold text-md rounded bg-sky-500 px-2 hover:scale-125 transition-transform duration-300">
+                        <button onClick={() => editTaskHandle(task.id)} className="font-bold text-md rounded bg-sky-500 px-2 hover:scale-125 transition-transform duration-300">
                             ✏️
                         </button>
                         {isLoading?
