@@ -34,7 +34,7 @@ export const Navbar = ({ user }) => {
 
     return (
         <nav className="bg-slate-800 sticky top-0 w-full z-50">
-            <div className="max-w-6xl mx-auto">
+            <div className="max-w-7xl mx-auto">
                 <div className="flex py-3 justify-between">
                     <div className="flex space-x-4">
                         {/* Logo */}
@@ -62,7 +62,7 @@ export const Navbar = ({ user }) => {
                             </button>
                         </form>
                     </div>
-                    <div className="hidden md:flex space-x-6">
+                    <div className="hidden md:flex space-x-4">
                         {user && <NavButton message={user.username}/>}
                         {user && <button onClick={onClickHandle} className="font-bold text-xl text-white hover:text-gray-300 items-center">
                                     Logout
