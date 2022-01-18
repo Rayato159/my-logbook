@@ -9,10 +9,10 @@ export const Input = ({ message, type, onChangeHandle, options }) => {
             </div>
             {options?
                 <div className="flex relative justify-end items-center">
-                    <input onChange={(e) => onChangeHandle(e.target.value)} type={type} className="w-full p-2 border-b-2 border-gray-600 focus:bg-slate-300 focus:outline-none duration-300" />
+                    <input onChange={(e) => onChangeHandle(e.target.value)} type={type} className="w-full p-2 border-b-2 border-gray-600 bg-slate-300  focus:bg-slate-200 focus:outline-none duration-300" />
                     {options}
                 </div>:
-                <input onChange={(e) => onChangeHandle(e.target.value)} type={type} className="w-full p-2 border-b-2 border-gray-600 focus:bg-slate-300 focus:outline-none duration-300" />
+                <input onChange={(e) => onChangeHandle(e.target.value)} type={type} className="w-full p-2 border-b-2 border-gray-600 bg-slate-300 focus:bg-slate-200 focus:outline-none duration-300" />
             }
         </div>
     )
