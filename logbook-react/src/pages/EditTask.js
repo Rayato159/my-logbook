@@ -86,7 +86,7 @@ export const EditTask = () => {
                             }
                             <div className="pt-3">
                                 {isLoading?
-                                    <SubmitButton message={"Pending..."} beauty={"w-full bg-myrose-400  rounded font-bold text-xl text-myrose-500 p-1"} />
+                                    <SubmitButton message={"Pending..."} beauty={"w-full bg-slate-600  rounded font-bold text-xl text-white p-1"} />
                                     :
                                     <button onClick={onSubmitHandle} type="submit" className="w-full bg-slate-800 hover:bg-slate-600  rounded font-bold text-xl text-white p-1">
                                         Submit

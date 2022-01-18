@@ -25,7 +25,7 @@ export const Home = () => {
 
     // Store
     const dispatch = useDispatch()
-    const [user, { taskInfo }, { isLoading, taskOneInfo }, { keyword }] = useSelector((state) => [
+    const [user, { taskInfo, isLoading }, { taskOneInfo }, { keyword }] = useSelector((state) => [
         state.user,
         state.task,
         state.taskOne,
@@ -102,16 +102,19 @@ export const Home = () => {
             <div className="max-w-6xl mx-auto">
                 <div className="flex flex-col space-y-6">
                     {displayTasks}
-                    <ReactPaginate
-                        previousLabel={"<"}
-                        nextLabel={">"}
-                        pageCount={pageCount}
-                        onPageChange={changePage}
-                        containerClassName={"flex space-x-4 justify-center item"}
-                        previousLinkClassName={"bg-amber-500 p-1 hover:bg-amber-700"}
-                        nextLinkClassName={"bg-amber-500 p-1 hover:bg-amber-700"}
-                        activeClassName={"bg-amber-300 px-1 hover:scale-110 transition-transform duration-300"}
-                    />
+                    {isLoading? 
+                        null:
+                        <ReactPaginate
+                            previousLabel={"<"}
+                            nextLabel={">"}
+                            pageCount={pageCount}
+                            onPageChange={changePage}
+                            containerClassName={"flex space-x-4 justify-center item"}
+                            previousLinkClassName={"bg-amber-500 p-1 hover:bg-amber-700"}
+                            nextLinkClassName={"bg-amber-500 p-1 hover:bg-amber-700"}
+                            activeClassName={"bg-amber-300 px-1 hover:scale-110 transition-transform duration-300"}
+                        />
+                    }
                 </div>
             </div>
         </div>
