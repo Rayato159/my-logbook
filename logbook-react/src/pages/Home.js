@@ -19,16 +19,17 @@ export const Home = () => {
     const [pageNumber, setPageNumber] = useState(0)
     const tasksPerPage = 5
     const pagesVisited = pageNumber * tasksPerPage
-    
+
     // Navigate
     const navigate = useNavigate()
 
     // Store
     const dispatch = useDispatch()
-    const [user, { taskInfo }, { isLoading, taskOneInfo }] = useSelector((state) => [
+    const [user, { taskInfo }, { isLoading, taskOneInfo }, { keyword }] = useSelector((state) => [
         state.user,
         state.task,
         state.taskOne,
+        state.search
     ])
 
     if(!user.userInfo) {
@@ -36,9 +37,9 @@ export const Home = () => {
     }
 
     useEffect(() => {
-        async function fetchTasks() {
+        async function fetchTasks(search) {
             try {
-                const res = await getTasks()
+                const res = await getTasks(search)
                 dispatch(taskSuccess(res.sort((a, b) =>  new Date(b.created) - new Date(a.created))))
             } catch(e) {
                 dispatch(taskFail(e.message))
@@ -46,8 +47,8 @@ export const Home = () => {
         }
 
         dispatch(taskLoading())
-        fetchTasks()
-    }, [taskOneInfo])
+        fetchTasks(keyword)
+    }, [taskOneInfo, keyword])
 
     const deleteTaskHandle = async (id) => {
 
@@ -84,7 +85,7 @@ export const Home = () => {
 
     // Page Count
     const pageCount = Math.ceil(taskInfo.length / tasksPerPage)
-
+    
     const displayTasks = taskInfo.slice(pagesVisited, pagesVisited + tasksPerPage)
         .map((task) => {
             return (

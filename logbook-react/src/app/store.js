@@ -3,6 +3,7 @@ import loginReducer from '../features/loginSlice'
 import userReducer from '../features/userSlice'
 import taskReducer from '../features/taskSlice'
 import taskOneReducer from '../features/taskOneSlice'
+import searchReducer from '../features/searchSlice'
 
 export default configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export default configureStore({
     user: userReducer,
     task: taskReducer,
     taskOne: taskOneReducer,
+    search: searchReducer,
   }
 })
