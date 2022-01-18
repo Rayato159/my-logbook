@@ -25,7 +25,7 @@ export const Navbar = ({ user }) => {
     }
 
     return (
-        <nav className="bg-myrose-300 sticky top-0 w-full z-50">
+        <nav className="bg-slate-800 sticky top-0 w-full z-50">
             <div className="max-w-6xl mx-auto">
                 <div className="flex py-3 justify-between">
                     <div className="flex space-x-4">
@@ -60,7 +60,7 @@ export const Navbar = ({ user }) => {
                                     Logout
                                 </button>
                         }
-                        {user && <Link to="/home/add_task" className="font-bold text-xl text-white items-center bg-sky-500 px-2 rounded hover:scale-110 transition-transform duration-300">
+                        {user && <Link to="/home/add_task" className="font-bold text-xl text-black items-center bg-amber-300 px-2 rounded hover:scale-110 transition-transform duration-300">
                                     +Task 📝
                                 </Link>
                         }
@@ -73,11 +73,11 @@ export const Navbar = ({ user }) => {
                         {user && <ResNavButton message={user.username}/>}
                         {/* Logout */}
                         {user && 
-                            <button onClick={onClickHandle} className="block hover:bg-myrose-400 w-full text-left p-3 font-bold text-xl text-white">
+                            <button onClick={onClickHandle} className="block hover:bg-slate-600  w-full text-left p-3 font-bold text-xl text-white">
                                 Logout
                             </button>
                         }
-                        {user && <Link to="/home/add_task" className="block hover:bg-myrose-400 w-full text-left p-3 font-bold text-xl text-white">
+                        {user && <Link to="/home/add_task" className="block hover:bg-slate-600 w-full text-left p-3 font-bold text-xl text-white">
                                     Add Post
                                 </Link>
                         }

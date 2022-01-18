@@ -44,13 +44,11 @@ const App = () => {
       <BrowserRouter>
           <Navbar user={userInfo}/>
               <Routes>
-                  <Route>
-                      <Route path="/" element={<Login />} />
-                      <Route path="/home" element={<Home />} />
-                      <Route path="/home/add_task" element={<AddTask />} />
-                      <Route path="/home/edit_task" element={<EditTask />} />
-                      <Route path="*" element={<NotFound />} />
-                  </Route>
+                <Route index element={<Login />} />
+                <Route path="home" element={<Home />} />
+                  <Route path="home/add_task" element={<AddTask />} />
+                  <Route path="home/edit_task" element={<EditTask />} />
+                  <Route path="*" element={<NotFound />} />
               </Routes>
           <Footer />
       </BrowserRouter>

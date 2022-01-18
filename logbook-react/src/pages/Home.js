@@ -10,6 +10,9 @@ import { useSelector, useDispatch } from 'react-redux'
 import { taskLoading, taskSuccess, taskFail } from '../features/taskSlice'
 import { taskOneLoading, taskOneSuccess, taskOneFail } from '../features/taskOneSlice'
 
+// Components
+import { Task } from '../components/Task'
+
 export const Home = () => {
 
     // Pagination
@@ -85,30 +88,7 @@ export const Home = () => {
     const displayTasks = taskInfo.slice(pagesVisited, pagesVisited + tasksPerPage)
         .map((task) => {
             return (
-                <div key={task.id} className="flex flex-col border-2 rounded-md border-myrose-500 bg-myrose-200 p-4 mx-4">
-                    <div className="font-bold">
-                        📝 {task.title}
-                    </div>
-                    <div className="text-sm">
-                        📅 Date: {task.created}
-                    </div>
-                    <div className="ml-6 py-2">
-                        {task.description}
-                    </div>
-                    <div className="flex space-x-3 justify-end">
-                        <button onClick={() => editTaskHandle(task.id)} className="font-bold text-md rounded bg-sky-500 px-2 hover:scale-125 transition-transform duration-300">
-                            ✏️
-                        </button>
-                        {isLoading?
-                            <button disabled className="font-bold text-md rounded bg-red-300 px-2">
-                                ❌
-                            </button>:
-                            <button onClick={() => deleteTaskHandle(task.id)} className="font-bold text-md rounded bg-red-500 px-2 hover:scale-125 transition-transform duration-300">
-                                ❌
-                            </button>
-                        }
-                    </div>
-                </div>
+                <Task task={task} isLoading={isLoading} editTaskHandle={editTaskHandle} deleteTaskHandle={deleteTaskHandle}/>
             )
         })
 
@@ -126,10 +106,10 @@ export const Home = () => {
                         nextLabel={">"}
                         pageCount={pageCount}
                         onPageChange={changePage}
-                        containerClassName={"flex space-x-4 justify-center"}
-                        previousLinkClassName={"bg-myrose-300 p-1 hover:bg-myrose-200"}
-                        nextLinkClassName={"bg-myrose-300 p-1 hover:scale-110 transition-transform duration-300 hover:bg-myrose-200"}
-                        activeClassName={"bg-myrose-200 px-1 hover:scale-110 transition-transform duration-300"}
+                        containerClassName={"flex space-x-4 justify-center item"}
+                        previousLinkClassName={"bg-amber-500 p-1 hover:bg-amber-700"}
+                        nextLinkClassName={"bg-amber-500 p-1 hover:bg-amber-700"}
+                        activeClassName={"bg-amber-300 px-1 hover:scale-110 transition-transform duration-300"}
                     />
                 </div>
             </div>

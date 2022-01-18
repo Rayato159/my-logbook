@@ -47,7 +47,7 @@ export const EditTask = () => {
     return (
         <div>
             <div className="md:max-w-sm max-w-xs mx-auto my-10">
-                <div className="md:border-4 rounded-xl md:border-myrose-500 p-6 md:bg-myrose-200">
+                <div className="shadow-lg p-6 bg-white">
                     <div className="flex flex-col justify-center space-y-6">
                         {/* Login Header */}
                         <div className="flex justify-center items-center space-x-1">
@@ -66,14 +66,14 @@ export const EditTask = () => {
                                     <label className="font-bold text-md">Title</label>
                                     <label className="font-bold text-red-500">*</label>
                                 </div>
-                                <input value={title} onChange={(e) => setTitle(e.target.value)} type="text" className="w-full p-2 rounded focus:outline-none" />
+                                <input value={title} onChange={(e) => setTitle(e.target.value)} type="text" className="w-full p-2 border-b-2 border-slate-600 bg-slate-300 focus:outline-none focus:bg-slate-200 duration-300" />
                             </div>
                             <div>
                                 <div className="flex space-x-1 items-center mb-1">
                                     <label className="font-bold text-md">Description</label>
                                     <label className="font-bold text-red-500">*</label>
                                 </div>
-                                <textarea value={description} onChange={(e) => setDescription(e.target.value)} className="p-2 w-full rounded focus:outline-none" rows="6" cols="50"></textarea>
+                                <textarea value={description} onChange={(e) => setDescription(e.target.value)} className="p-2 w-full border-b-2 border-slate-600 bg-slate-300 focus:outline-none focus:bg-slate-200 duration-300" rows="6" cols="50"></textarea>
                             </div>
                             {errors.length > 0 &&
                                 <div className="p-2 bg-red-300 border border-red-500">
@@ -88,7 +88,7 @@ export const EditTask = () => {
                                 {isLoading?
                                     <SubmitButton message={"Pending..."} beauty={"w-full bg-myrose-400  rounded font-bold text-xl text-myrose-500 p-1"} />
                                     :
-                                    <button onClick={onSubmitHandle} type="submit" className="w-full bg-myrose-300 hover:bg-myrose-400  rounded font-bold text-xl text-myrose-500 p-1">
+                                    <button onClick={onSubmitHandle} type="submit" className="w-full bg-slate-800 hover:bg-slate-600  rounded font-bold text-xl text-white p-1">
                                         Submit
                                     </button>
                                 }
