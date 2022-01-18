@@ -39,8 +39,8 @@ export const Navbar = ({ user }) => {
                                     </svg>
                                 </button>
                             }
-                            <Logo />
                         </Link>
+                        <Logo />
 
                         {/* Searchbox */}
                         <div className="hidden md:flex relative items-center justify-end">
